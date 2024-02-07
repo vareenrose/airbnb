@@ -36,7 +36,7 @@ function PlacesPage() {
 								{item.photos.length > 0 && (
 									<img
 										className='w-32 h-32 rounded-2xl object-cover'
-										src={"http://localhost:4000/uploads/" + item.photos[0]}
+										src={import.meta.env.VITE_API_URL + "/uploads/" + item.photos[0]}
 										alt=''
 									/>
 								)}

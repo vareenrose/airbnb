@@ -13,7 +13,7 @@ const fs = require("fs");
 const Booking = require("./models/Booking");
 
 const app = express();
-const jwtSecret = "s8e28hter4gswagg4da3a3";
+const jwtSecret = process.env.JWT_SECRET;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -21,7 +21,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
 	cors({
 		credentials: true,
-		origin: "http://localhost:5173",
+		origin: process.env.CLIENT_URL,
 	})
 );
 

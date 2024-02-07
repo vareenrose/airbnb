@@ -181,7 +181,7 @@ function PlacesFormPage() {
 						onClick={addPhotoByLink}
 						className='bg-gray-200 mt-2 px-4 rounded-2xl'
 					>
-						Add&nbsp;Photo
+						Add Photo
 					</button>
 				</div>
 				<div className='mt-2 grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4'>
@@ -190,7 +190,7 @@ function PlacesFormPage() {
 							<div className='h-32 flex relative' key={link}>
 								<img
 									className='rounded-2xl w-full object-cover'
-									src={"http://localhost:4000/uploads/" + link}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${link}`}
 									alt=''
 								/>
 								<button

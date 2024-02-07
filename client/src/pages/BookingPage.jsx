@@ -46,7 +46,7 @@ function BookingPage() {
 					{booking.place?.photos?.length > 0 &&
 						booking.place.photos.map((photo) => (
 							<div key={photo} className=''>
-								<img src={`http://localhost:4000/uploads/${photo}`} alt='' />
+								<img src={`${import.meta.env.VITE_API_URL}/uploads/${photo}`} alt='' />
 							</div>
 						))}
 				</div>
@@ -72,7 +72,7 @@ function BookingPage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`http://localhost:4000/uploads/${booking.place.photos[0]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[0]}`}
 								alt=''
 							/>
 						)}
@@ -82,7 +82,7 @@ function BookingPage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`http://localhost:4000/uploads/${booking.place.photos[1]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[1]}`}
 								alt=''
 							/>
 						)}
@@ -91,7 +91,7 @@ function BookingPage() {
 								<img
 									onClick={() => setAllPhotos(true)}
 									className='aspect-square object-cover relative top-2 cursor-pointer'
-									src={`http://localhost:4000/uploads/${booking.place.photos[2]}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[2]}`}
 									alt=''
 								/>
 							)}
