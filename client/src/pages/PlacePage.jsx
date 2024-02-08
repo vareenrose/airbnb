@@ -2,19 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import icons from "../assets/icons";
-import { differenceInCalendarDays } from "date-fns"
+import { differenceInCalendarDays } from "date-fns";
 
 function PlacePage() {
 	const { id } = useParams();
 	const [place, setPlace] = useState(null);
 	const [allPhotos, setAllPhotos] = useState(false);
-    const [bookingData, setBookingData] = useState({
-        checkIn: '',
-        checkOut: '',
-        guests: 1,
-        
-    })
-    const [redirect, setRedirect] = useState('');
+	const [bookingData, setBookingData] = useState({
+		checkIn: "",
+		checkOut: "",
+		guests: 1,
+	});
+	const [redirect, setRedirect] = useState("");
 	useEffect(() => {
 		if (!id) {
 			return;
@@ -24,32 +23,36 @@ function PlacePage() {
 		});
 	}, [id]);
 
-    const handleChange = (ev) => {
-        setBookingData({...bookingData, [ev.target.name]: ev.target.value})
-    }
+	const handleChange = (ev) => {
+		setBookingData({ ...bookingData, [ev.target.name]: ev.target.value });
+	};
 
-    let numberOfNights = 0
-    if (bookingData.checkOut && bookingData.checkIn) {
-        numberOfNights = differenceInCalendarDays(
-					new Date(bookingData.checkOut),
-					new Date(bookingData.checkIn)
-				);
-    }
+	let numberOfNights = 0;
+	if (bookingData.checkOut && bookingData.checkIn) {
+		numberOfNights = differenceInCalendarDays(
+			new Date(bookingData.checkOut),
+			new Date(bookingData.checkIn)
+		);
+	}
 
-    const makeBooking = async (ev) => {
-        ev.preventDefault()
-        const res = await axios.post('/booking', {...bookingData, place: place._id, price: numberOfNights*place.price})
-        const bookingId = res.data._id
+	const makeBooking = async (ev) => {
+		ev.preventDefault();
+		const res = await axios.post("/booking", {
+			...bookingData,
+			place: place._id,
+			price: numberOfNights * place.price,
+		});
+		const bookingId = res.data._id;
 
-        if (bookingId) {
-            setRedirect(`account/bookings/${bookingId}`)
-        }
-    }
+		if (bookingId) {
+			setRedirect(`account/bookings/${bookingId}`);
+		}
+	};
 
 	if (!place) return "";
-    if (redirect) {
-        return <Navigate to={redirect} />
-    }
+	if (redirect) {
+		return <Navigate to={redirect} />;
+	}
 	if (allPhotos) {
 		return (
 			<div className='absolute inset-0 bg-white min-h-screen'>
@@ -66,7 +69,10 @@ function PlacePage() {
 					{place?.photos?.length > 0 &&
 						place.photos.map((photo) => (
 							<div className=''>
-								<img src={`${import.meta.env.VITE_API_URL}/uploads/${photo}`} alt='' />
+								<img
+									src={`${import.meta.env.VITE_API_URL}/uploads/${photo}`}
+									alt=''
+								/>
 							</div>
 						))}
 				</div>
@@ -75,7 +81,7 @@ function PlacePage() {
 	}
 
 	return (
-		<div className='mt-4 bg-gray-50 -mx-8 px-8 py-8'>
+		<div className='mt-4 bg-gray-50 -mx-8 px-8 py-8 2xl:mx-auto 2xl:max-w-7xl'>
 			<h1 className='text-3xl'>{place.title}</h1>
 			<a
 				className='flex gap-1 my-3 font-semibold underline'
@@ -92,7 +98,9 @@ function PlacePage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${place.photos[0]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${
+									place.photos[0]
+								}`}
 								alt=''
 							/>
 						)}
@@ -102,7 +110,9 @@ function PlacePage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${place.photos[1]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${
+									place.photos[1]
+								}`}
 								alt=''
 							/>
 						)}
@@ -111,7 +121,9 @@ function PlacePage() {
 								<img
 									onClick={() => setAllPhotos(true)}
 									className='aspect-square object-cover relative top-2 cursor-pointer'
-									src={`${import.meta.env.VITE_API_URL}/uploads/${place.photos[2]}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${
+										place.photos[2]
+									}`}
 									alt=''
 								/>
 							)}
@@ -144,20 +156,40 @@ function PlacePage() {
 							<div className='flex'>
 								<div className='py-3 px-4'>
 									<label>Check-in</label>
-									<input type='date' name='checkIn' value={bookingData.checkIn} onChange={handleChange} />
+									<input
+										type='date'
+										name='checkIn'
+										value={bookingData.checkIn}
+										onChange={handleChange}
+									/>
 								</div>
 								<div className='py-3 px-4 border-l'>
 									<label>Check-out</label>
-									<input type='date' name='checkOut' value={bookingData.checkOut} onChange={handleChange} />
+									<input
+										type='date'
+										name='checkOut'
+										value={bookingData.checkOut}
+										onChange={handleChange}
+									/>
 								</div>
 							</div>
 							<div className='py-3 px-4 border-t'>
 								<label>Guests</label>
-								<input type='number' max={place.maxGuests} name='guests' value={bookingData.guests} onChange={handleChange} />
+								<input
+									type='number'
+									max={place.maxGuests}
+									name='guests'
+									value={bookingData.guests}
+									onChange={handleChange}
+								/>
 							</div>
-                            
 						</div>
-						<button onClick={makeBooking} className='primary font-semibold'>Book {numberOfNights > 0 && <span> ${numberOfNights*place.price}</span> }</button>
+						<button onClick={makeBooking} className='primary font-semibold'>
+							Book{" "}
+							{numberOfNights > 0 && (
+								<span> ${numberOfNights * place.price}</span>
+							)}
+						</button>
 					</div>
 				</div>
 			</div>

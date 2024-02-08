@@ -55,7 +55,7 @@ function BookingPage() {
 	}
 
 	return (
-		<div className='mt-4 bg-gray-50 -mx-8 px-8 py-8'>
+		<div className='mt-4 bg-gray-50 -mx-8 px-8 py-8 2xl:mx-auto 2xl:max-w-7xl'>
 			<h1 className='text-3xl'>{booking.place.title}</h1>
 			<a
 				className='flex gap-1 my-3 font-semibold underline'
@@ -72,7 +72,9 @@ function BookingPage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[0]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${
+									booking.place.photos[0]
+								}`}
 								alt=''
 							/>
 						)}
@@ -82,7 +84,9 @@ function BookingPage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[1]}`}
+								src={`${import.meta.env.VITE_API_URL}/uploads/${
+									booking.place.photos[1]
+								}`}
 								alt=''
 							/>
 						)}
@@ -91,7 +95,9 @@ function BookingPage() {
 								<img
 									onClick={() => setAllPhotos(true)}
 									className='aspect-square object-cover relative top-2 cursor-pointer'
-									src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[2]}`}
+									src={`${import.meta.env.VITE_API_URL}/uploads/${
+										booking.place.photos[2]
+									}`}
 									alt=''
 								/>
 							)}
