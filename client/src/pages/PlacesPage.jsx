@@ -36,14 +36,14 @@ function PlacesPage() {
 								{item.photos.length > 0 && (
 									<img
 										className='w-32 h-32 rounded-2xl object-cover'
-										src={import.meta.env.VITE_API_URL + "/uploads/" + item.photos[0]}
+										src={item.photos[0]}
 										alt=''
 									/>
 								)}
 							</div>
 							<div>
 								<h2 className='text-xl font-semibold'>{item.title}</h2>
-								<p className='text-sm mt-2'>{item.description}</p>
+								<p className='text-sm mt-2 line-clamp-4'>{item.description}</p>
 							</div>
 						</Link>
 					))}

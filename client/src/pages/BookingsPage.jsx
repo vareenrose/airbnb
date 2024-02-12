@@ -28,7 +28,7 @@ function BookingsPage() {
 								{booking.place?.photos?.length > 0 && (
 									<img
 										className='object-cover'
-										src={`${import.meta.env.VITE_API_URL}/uploads/${booking.place.photos[0]}`}
+										src={booking.place.photos[0]}
 										alt=''
 									/>
 								)}

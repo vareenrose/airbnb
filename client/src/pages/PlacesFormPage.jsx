@@ -3,9 +3,12 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import icons from "../assets/icons";
 import axios from "axios";
 import AccountNav from "../components/AccountNav";
+import { storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid"
 
 function PlacesFormPage() {
-	const { id } = useParams();
+	const { id } = useParams();	
 	useEffect(() => {
 		if (!id) {
 			return;
@@ -39,7 +42,7 @@ function PlacesFormPage() {
 		price: 100
 	});
 
-	const [photoLink, setPhotoLink] = useState("");
+	// const [photoLink, setPhotoLink] = useState("");
 	const [redirect, setRedirect] = useState(false);
 	const perksArray = [
 		"Wifi",
@@ -69,30 +72,59 @@ function PlacesFormPage() {
 		);
 	}
 
-	async function addPhotoByLink(e) {
-		e.preventDefault();
-		const { data } = await axios.post("/upload-by-link", {
-			link: photoLink,
-		});
-		setPlace({ ...place, photos: [...place.photos, data] });
-		setPhotoLink("");
-	}
-
+	// async function addPhotoByLink(e) {
+	// 	e.preventDefault();
+	// 	const { data } = await axios.post("/upload-by-link", {
+	// 		link: photoLink,
+	// 	});
+	// 	setPlace({ ...place, photos: [...place.photos, data] });
+	// 	setPhotoLink("");
+	// }
 	function uploadPhoto(e) {
 		const files = e.target.files;
-		const formData = new FormData();
+		const photoArr = [];
+		// const formData = new FormData();
 		for (let i = 0; i < files.length; i++) {
-			formData.append("photos", files[i]);
+			const imageRef = ref(storage, `images/${v4()}`);
+			uploadBytes(imageRef, files[i]).then(snapshot =>
+				getDownloadURL(snapshot.ref).then(url => 
+					// photoArr.push(url)
+					setPlace((prevPlace) =>  ({...prevPlace, photos: [...prevPlace.photos, url] }))
+                
+
+                )
+			)
+			// formData.append("photos", files[i]);
 		}
 
-		axios
-			.post("/upload", formData, {
-				headers: { "Content-Type": "multipart/form-data" },
-			})
-			.then((res) => {
-				const { data: filenames } = res;
-				setPlace({ ...place, photos: [...place.photos, ...filenames] });
-			});
+		console.log(photoArr)
+
+		// setPlace({ ...place, photos: [...place.photos, ...photoArr] });
+
+		// axios
+		// 	.post("/upload", formData, {
+		// 		headers: { "Content-Type": "multipart/form-data" },
+		// 	})
+		// 	.then((res) => {
+		// 		const { data: filenames } = res;
+		// 		setPlace({ ...place, photos: [...place.photos, ...filenames] });
+		// 	});
+	}
+
+	function deletePhoto(e, filename) {
+		e.preventDefault();
+		setPlace({
+			...place,
+			photos: place.photos.filter((photo) => photo !== filename),
+		});
+	}
+
+	function selectAsCoverPhoto(e, filename) {
+		e.preventDefault();
+		setPlace({
+			...place,
+			photos: [filename, ...place.photos.filter((photo) => photo !== filename)],
+		});
 	}
 
 	function handleCheckbox(e) {
@@ -130,23 +162,12 @@ function PlacesFormPage() {
 		}
 	}
 
-	if (redirect) return <Navigate to={"/account/places"} />;
-
-	function deletePhoto(e, filename) {
-		e.preventDefault()
-		setPlace({...place, photos: place.photos.filter(photo => photo !== filename)})
-	}
-
-	function selectAsCoverPhoto(e, filename) {
-		e.preventDefault()		
-		setPlace({...place, photos: [filename, ...place.photos.filter(photo => photo !== filename)]})
-	}
-	
+	if (redirect) return <Navigate to={"/account/places"} />;	
 
 	return (
 		<div>
 			<AccountNav />
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} className='2xl:mx-auto 2xl:max-w-7xl'>
 				{preInput("Title", "name of the place, make it short and catchy")}
 				<input
 					type='text'
@@ -169,7 +190,7 @@ function PlacesFormPage() {
 
 				{preInput("Photos", "the more the better")}
 
-				<div className='flex gap-2'>
+				{/* <div className='flex gap-2'>
 					<input
 						type='text'
 						name=''
@@ -181,16 +202,16 @@ function PlacesFormPage() {
 						onClick={addPhotoByLink}
 						className='bg-gray-200 mt-2 px-4 rounded-2xl'
 					>
-						Add Photo
+						Add&nbsp;Photo
 					</button>
-				</div>
+				</div> */}
 				<div className='mt-2 grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4'>
 					{place.photos.length > 0 &&
 						place.photos.map((link) => (
 							<div className='h-32 flex relative' key={link}>
 								<img
 									className='rounded-2xl w-full object-cover'
-									src={`${import.meta.env.VITE_API_URL}/uploads/${link}`}
+									src={link}
 									alt=''
 								/>
 								<button

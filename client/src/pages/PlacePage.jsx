@@ -69,10 +69,7 @@ function PlacePage() {
 					{place?.photos?.length > 0 &&
 						place.photos.map((photo) => (
 							<div className=''>
-								<img
-									src={`${import.meta.env.VITE_API_URL}/uploads/${photo}`}
-									alt=''
-								/>
+								<img src={photo} alt='' />
 							</div>
 						))}
 				</div>
@@ -98,9 +95,7 @@ function PlacePage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${
-									place.photos[0]
-								}`}
+								src={place.photos[0]}
 								alt=''
 							/>
 						)}
@@ -110,9 +105,7 @@ function PlacePage() {
 							<img
 								onClick={() => setAllPhotos(true)}
 								className='aspect-square object-cover cursor-pointer'
-								src={`${import.meta.env.VITE_API_URL}/uploads/${
-									place.photos[1]
-								}`}
+								src={place.photos[1]}
 								alt=''
 							/>
 						)}
@@ -121,9 +114,7 @@ function PlacePage() {
 								<img
 									onClick={() => setAllPhotos(true)}
 									className='aspect-square object-cover relative top-2 cursor-pointer'
-									src={`${import.meta.env.VITE_API_URL}/uploads/${
-										place.photos[2]
-									}`}
+									src={place.photos[2]}
 									alt=''
 								/>
 							)}
