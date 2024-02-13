@@ -74,7 +74,7 @@ app.post("/login", async (req, res) => {
 					if (err) {
 						throw err;
 					}
-					res.cookie("token", token, { httpOnly: true }).send(user);
+					res.cookie("token", token, { httpOnly: true, sameSite: "none", secure: true }).send(user);
 				}
 			);
 			// res.send('pass ok')

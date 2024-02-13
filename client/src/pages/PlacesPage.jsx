@@ -10,7 +10,7 @@ function PlacesPage() {
 		axios.get("/user-places").then(({ data }) => {
 			setPlacesList(data);
 		});
-	}, [placesList]);
+	}, []);
 
 	return (
 		<div>

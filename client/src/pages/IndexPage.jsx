@@ -8,7 +8,7 @@ export default function IndexPage() {
 		axios.get("/places").then((res) => {
 			setListings(res.data);
 		});
-	}, [listings]);
+	}, []);
 
 	return (
 		<div className='grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-8'>
