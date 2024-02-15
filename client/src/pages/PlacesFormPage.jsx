@@ -4,11 +4,16 @@ import icons from "../assets/icons";
 import axios from "axios";
 import AccountNav from "../components/AccountNav";
 import { storage } from "../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid"
+import {
+	deleteObject,
+	getDownloadURL,
+	ref,
+	uploadBytes,
+} from "firebase/storage";
+import { v4 } from "uuid";
 
 function PlacesFormPage() {
-	const { id } = useParams();	
+	const { id } = useParams();
 	useEffect(() => {
 		if (!id) {
 			return;
@@ -24,7 +29,7 @@ function PlacesFormPage() {
 				checkOut: data.checkOut,
 				maxGuests: data.maxGuests,
 				photos: data.photos,
-				price: data.price
+				price: data.price,
 			});
 		});
 	}, [id]);
@@ -39,7 +44,7 @@ function PlacesFormPage() {
 		checkOut: "",
 		maxGuests: 1,
 		photos: [],
-		price: 100
+		price: 100,
 	});
 
 	// const [photoLink, setPhotoLink] = useState("");
@@ -80,24 +85,24 @@ function PlacesFormPage() {
 	// 	setPlace({ ...place, photos: [...place.photos, data] });
 	// 	setPhotoLink("");
 	// }
+
 	function uploadPhoto(e) {
 		const files = e.target.files;
-		const photoArr = [];
+
 		// const formData = new FormData();
 		for (let i = 0; i < files.length; i++) {
 			const imageRef = ref(storage, `images/${v4()}`);
-			uploadBytes(imageRef, files[i]).then(snapshot =>
-				getDownloadURL(snapshot.ref).then(url => 
+			uploadBytes(imageRef, files[i]).then((snapshot) =>
+				getDownloadURL(snapshot.ref).then((url) =>
 					// photoArr.push(url)
-					setPlace((prevPlace) =>  ({...prevPlace, photos: [...prevPlace.photos, url] }))
-                
-
-                )
-			)
+					setPlace((prevPlace) => ({
+						...prevPlace,
+						photos: [...prevPlace.photos, url],
+					}))
+				)
+			);
 			// formData.append("photos", files[i]);
 		}
-
-		console.log(photoArr)
 
 		// setPlace({ ...place, photos: [...place.photos, ...photoArr] });
 
@@ -111,12 +116,16 @@ function PlacesFormPage() {
 		// 	});
 	}
 
-	function deletePhoto(e, filename) {
+	function deletePhoto(e, imgUrl) {
 		e.preventDefault();
+		const delRef = ref(storage, imgUrl);
 		setPlace({
 			...place,
-			photos: place.photos.filter((photo) => photo !== filename),
+			photos: place.photos.filter((photo) => photo !== imgUrl),
 		});
+		deleteObject(delRef)
+			.then(() => alert("image deleted successfully"))
+			.catch((err) => console.log(err));
 	}
 
 	function selectAsCoverPhoto(e, filename) {
@@ -162,7 +171,7 @@ function PlacesFormPage() {
 		}
 	}
 
-	if (redirect) return <Navigate to={"/account/places"} />;	
+	if (redirect) return <Navigate to={"/account/places"} />;
 
 	return (
 		<div>
