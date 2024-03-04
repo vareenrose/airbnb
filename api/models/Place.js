@@ -15,5 +15,7 @@ const PlaceSchema = new mongoose.Schema({
 })
 
 const PlaceModel = mongoose.model('Place', PlaceSchema)
-
+// PlaceModel.createIndexes({title: 'text', description: 'text', address: 'text'}).then(err => {
+//     if (err) console.log(err)
+// }) 
 module.exports = PlaceModel

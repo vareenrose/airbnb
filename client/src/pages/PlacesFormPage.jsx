@@ -329,7 +329,7 @@ function PlacesFormPage() {
 					onChange={handleChange}
 				/>
 				<div>
-					<button className='primary my-4'>Save</button>
+					<button type="submit" className='primary my-4'>Save</button>
 				</div>
 			</form>
 		</div>

@@ -1,14 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default function IndexPage() {
 	const [listings, setListings] = useState([]);
+	let [searchParams, setSearchParams] = useSearchParams()
+	
 	useEffect(() => {
-		axios.get("/places").then((res) => {
-			setListings(res.data);
-		});
-	}, []);
+		axios
+			.get("/places", { params: { q: searchParams.get("q") } })
+			.then((res) => {
+				setListings(res.data);
+			});
+	}, [searchParams]);
 
 	return (
 		<div className='grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-8'>
